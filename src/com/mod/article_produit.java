@@ -67,11 +67,18 @@ public class article_produit extends javax.swing.JFrame {
                    
                     
                     int stock = rs.getInt("stock_entree");
-                   
+                    
+//                   if(stock<=0){
+//                    JOptionPane.showMessageDialog(this, "Votre stock ne doit pas etre insuffisant", "Erreur", JOptionPane.ERROR_MESSAGE);
+//                     return;
+//                   }
+//                   else{
+
                     model.addRow(new Object[]{codeCat, refArt, libelle, rangement,Cat, fournisseur, stock});
               
-
-                  }
+                   
+                }
+                
                 rs.close();
                 st.close();
                 con.close();
@@ -452,7 +459,7 @@ loadData();
             int stock_tab=rs.getInt("stock_entree");
 
             int stock_nouveau = stock_tab + stock;
-            String sql = "UPDATE article SET stock_entree=?,rangement=?,fournisseur=?,categorie=? where refArt=?";
+            String sql = "UPDATE article SET stock_entree=?,rangement=?,fournisseur=?,libelle=?,categorie=? where refArt=?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, stock_nouveau);
@@ -460,6 +467,7 @@ loadData();
              stmt.setString(3, four);
               stmt.setString(4, libelle);
                stmt.setString(5, cat);
+               stmt.setString(6,refArt);
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "La ligne a été modifiée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
@@ -536,12 +544,16 @@ loadData();
             nomCat=txtCat1.getSelectedItem().toString();
              
          
-             
+         
+           
                  
              
-                String sql = "SELECT * FROM article WHERE categorie LIKE '%"+nomCat+"%' or libelle LIKE '%"+lib+"%' OR refArt LIKE '%"+ref+"%'";
+                String sql = "SELECT * FROM article WHERE categorie LIKE ? or libelle LIKE ? OR refArt LIKE ?";
                 PreparedStatement pstmt = con.prepareStatement(sql);
-               
+                pstmt.setString(1, ref + "%");
+            pstmt.setString(2, lib + "%"); 
+            pstmt.setString(3, nomCat + "%");
+           
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     String libelle= rs.getString("libelle");

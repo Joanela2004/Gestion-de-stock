@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mod;
+package com.model;
 
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -83,7 +83,7 @@ private int numDemande;
                 Fill_Date();
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(faire.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -720,6 +720,7 @@ private int numDemande;
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Magasin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

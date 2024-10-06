@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mod;
+package com.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -274,7 +274,7 @@ public class AccueilForm extends javax.swing.JFrame {
 
                         } else {
                             if (services.equals("gestionnaire de stock")) {
-                                ArticleForm art = new ArticleForm();
+                                menu art = new menu();
                                 art.setVisible(true);
                                 this.dispose();
 
@@ -328,6 +328,7 @@ public class AccueilForm extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AccueilForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
