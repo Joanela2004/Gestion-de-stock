@@ -1,4 +1,4 @@
-package com.model;
+package employer;
 
 import com.mysql.cj.protocol.Resultset;
 import java.sql.Connection;
@@ -18,11 +18,12 @@ import com.mod.Listcategorie;
 import com.mod.article_produit;
 import java.awt.HeadlessException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import javax.swing.table.TableCellRenderer;
 
 public class article extends javax.swing.JFrame {
 
-    private DefaultTableModel model;
+    private DefaultTableModel model1;
     private String ancien;
 
     public article() throws SQLException {
@@ -30,9 +31,13 @@ public class article extends javax.swing.JFrame {
         initComponents();
         Connect();
         loadData();
-      
-       ajoutfour();
+        nbrCateg();
+        ajoutfour();
         ajoutcat();
+        dateR.setText(LocalDate.now().toString());
+        dateR.setEditable(false);
+        model1 = new DefaultTableModel(new String[]{"Reference", "libelle", "Code categorie", "categorie", "rangement", "fournisseur", "stock"}, 0);
+        table.setModel(model1);
     }
     Connection con;
     PreparedStatement pstmt;
@@ -51,6 +56,22 @@ public class article extends javax.swing.JFrame {
         }
     }
 
+    private void nbrCateg() {
+        try {
+            pstmt = con.prepareStatement("SELECT COUNT(*) AS total FROM article");
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int totalCategories = rs.getInt("total");
+                nbrArt.setText(String.valueOf(totalCategories)); // Mettre à jour le TextField
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Erreur SQL: " + ex.getMessage());
+        }
+    }
+
     public void loadData() {
         try {
 
@@ -61,7 +82,7 @@ public class article extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection(url, user, pwd);
             con.setAutoCommit(false);
 
-            DefaultTableModel model = new DefaultTableModel(new String[]{"Code categorie", "Reference", "libelle", "rangement","categorie", "fournisseur","stock"}, 0);
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Code categorie", "Reference", "libelle", "rangement", "categorie", "fournisseur", "stock"}, 0);
             table.setModel(model);
 
             try {
@@ -70,7 +91,7 @@ public class article extends javax.swing.JFrame {
 
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery(sql);
-            
+
                 while (rs.next()) {
                     String Cat = rs.getString("categorie");
                     String codeCat = rs.getString("codeCat");
@@ -79,21 +100,14 @@ public class article extends javax.swing.JFrame {
                     String rangement = rs.getString("rangement");
 
                     String fournisseur = rs.getString("fournisseur");
-                   
-                    
-                    int stock = rs.getInt("stock_entree");
-                    
-//                   if(stock<=0){
-//                    JOptionPane.showMessageDialog(this, "Votre stock ne doit pas etre insuffisant", "Erreur", JOptionPane.ERROR_MESSAGE);
-//                     return;
-//                   }
-//                   else{
 
-                    model.addRow(new Object[]{codeCat, refArt, libelle, rangement,Cat, fournisseur, stock});
-              
-                   
+                    int stock = rs.getInt("stock_entree");
+
+
+                    model.addRow(new Object[]{codeCat, refArt, libelle, rangement, Cat, fournisseur, stock});
+
                 }
-                
+
                 rs.close();
                 st.close();
                 con.close();
@@ -104,10 +118,8 @@ public class article extends javax.swing.JFrame {
             Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-   
-            
-        public void ajoutcat() {
+
+    public void ajoutcat() {
         try {
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
@@ -134,8 +146,8 @@ public class article extends javax.swing.JFrame {
         }
 
     }
-        
-         public void ajoutfour() {
+
+    public void ajoutfour() {
         try {
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
@@ -195,6 +207,9 @@ public class article extends javax.swing.JFrame {
         btnSuppA1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        dateR = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(80, 80));
@@ -261,6 +276,7 @@ public class article extends javax.swing.JFrame {
 
         btnAjoutA.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAjoutA.setForeground(new java.awt.Color(0, 102, 0));
+        btnAjoutA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/ajouter(1).png"))); // NOI18N
         btnAjoutA.setText("Ajouter");
         btnAjoutA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,6 +286,7 @@ public class article extends javax.swing.JFrame {
 
         btnSuppA.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSuppA.setForeground(new java.awt.Color(255, 0, 0));
+        btnSuppA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/supprimer(1)-1.png"))); // NOI18N
         btnSuppA.setText("Supprimer");
         btnSuppA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,6 +300,7 @@ public class article extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 153, 51));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/faire-tourner-en-sens-inverse-1.png"))); // NOI18N
         jLabel6.setText("Actualiser");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -305,10 +323,12 @@ public class article extends javax.swing.JFrame {
 
         jLabel9.setText("Catégorie :");
 
+        txtCat.setForeground(new java.awt.Color(255, 102, 51));
         txtCat.setBorder(null);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/la-gauche.png"))); // NOI18N
         jLabel10.setText("Retour");
         jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -327,7 +347,8 @@ public class article extends javax.swing.JFrame {
         txtStock.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 153, 51)));
 
         btnSuppA1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSuppA1.setForeground(new java.awt.Color(255, 0, 0));
+        btnSuppA1.setForeground(new java.awt.Color(0, 204, 204));
+        btnSuppA1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/fleche-de-cercle-de-disquette-vers-la-droite(2).png"))); // NOI18N
         btnSuppA1.setText("Enregistrer");
         btnSuppA1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -340,7 +361,7 @@ public class article extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Reference de l' article", "Libelle", " Catégorie", "Code categorie", "Fournisseur", "Rangement", "stock"
+                "Reference de l' article", "Libelle", " Catégorie", "Code categorie", "Fournisseur", "Rangement", "stock", "Date de reception"
             }
         ));
         table.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -350,54 +371,80 @@ public class article extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(table);
 
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stages sary/chercher.png"))); // NOI18N
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+
+        jLabel14.setText("Date de réception :");
+
+        dateR.setEditable(false);
+        dateR.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 153, 51)));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRan, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnAjoutA)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnSuppA1)
-                                .addGap(9, 9, 9)
-                                .addComponent(btnSuppA))
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(nbrArt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(303, 303, 303))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                                .addComponent(cherche, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtCat, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtFour, javax.swing.GroupLayout.Alignment.LEADING, 0, 295, Short.MAX_VALUE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nbrArt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtchr, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(178, 178, 178)
-                                .addComponent(jLabel6)
-                                .addGap(69, 69, 69)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnAjoutA)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnSuppA1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnSuppA))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cherche, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtCat, javax.swing.GroupLayout.Alignment.LEADING, 0, 293, Short.MAX_VALUE)
+                                        .addComponent(txtFour, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtRan, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(128, 128, 128))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(21, 21, 21)
+                                                .addComponent(dateR, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(11, 11, 11)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtchr, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                                        .addComponent(jLabel6)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,59 +453,65 @@ public class article extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtchr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel10))))
+                            .addComponent(jLabel13)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel6))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nbrArt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel8)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(cherche))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(jLabel1)))
                         .addGap(18, 18, 18)
                         .addComponent(txtLibelle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(jLabel9)
-                        .addGap(26, 26, 26)
+                        .addGap(18, 18, 18)
                         .addComponent(txtCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addGap(26, 26, 26)
                         .addComponent(txtFour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addComponent(jLabel2)
-                        .addGap(26, 26, 26)
+                        .addGap(31, 31, 31)
                         .addComponent(txtRan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAjoutA)
-                            .addComponent(btnSuppA)
-                            .addComponent(btnSuppA1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(nbrArt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cherche)
-                                .addGap(439, 439, 439))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2)))))
-                .addGap(23, 23, 23))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnAjoutA)
+                                    .addComponent(btnSuppA)
+                                    .addComponent(btnSuppA1)))
+                            .addComponent(jLabel14))
+                        .addGap(13, 13, 13))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -466,15 +519,15 @@ public class article extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -485,110 +538,98 @@ public class article extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void chercheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chercheMouseClicked
-        String pid = txtchr.getText().toString();
-        try {
-            model.setRowCount(0);
 
-            pstmt = con.prepareStatement("SELECT * FROM categorie WHERE codeCat LIKE ? OR nomCat LIKE ?");
-            pstmt.setString(1, pid + "%");
-            pstmt.setString(2, pid + "%");
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                String cdeCat = rs.getString("codeCat");
-                String nmCat = rs.getString("nomCat");
-                model.addRow(new Object[]{cdeCat, nmCat});
-            }
-
-            if (model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "Aucun résultat");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_chercheMouseClicked
 
 
     private void btnAjoutAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjoutAActionPerformed
-    String Cat,four,code, ref, rang,li;
-     int s;
-      
-                try { 
+
+        String Cat, four, code, ref, rang, li;
+        int s;
+
+        try {
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
             String user = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
-         try (Connection con = DriverManager.getConnection(url, user, pwd)) {
-             
-             if (txtCat.getSelectedItem().toString().equals("") || txtRef.getText().equals("") 
-                     || txtLibelle.getText().equals("")
-                     || txtFour.getSelectedItem().equals("") || txtRan.getText().equals("")
-                     ||  txtStock.getText().equals("")) {
-                 JOptionPane.showMessageDialog(this, "SVP entrer les informations complete");
-             } else {
-                 
-                 Cat = txtCat.getSelectedItem().toString();
-                 four = txtFour.getSelectedItem().toString();
-                 ref = txtRef.getText();
-                 li = txtLibelle.getText();
-                 rang = txtRan.getText();
-                // pr = Integer.parseInt(txtPrix.getText());
-                 s = Integer.parseInt(  txtStock.getText());
-                 
-                String sqls = "SELECT codeCat FROM categorie WHERE nomCat =?";
-                PreparedStatement stmt = con.prepareStatement(sqls);
-                stmt.setString(1, Cat); // Set the parameter value here
-                ResultSet k = stmt.executeQuery();
-              
-                
+            try (Connection con = DriverManager.getConnection(url, user, pwd)) {
 
-                
-                if(k.next()){
-                code = k.getString("codeCat");
-                 String sql = "INSERT INTO article(codeCat,refArt,libelle,fournisseur,rangement,stock_entree,categorie) VALUES (?,?,?,?,?,?,?)";
-                 PreparedStatement st = con.prepareStatement(sql);
-                 
-               
-                st.setString(1, code);
-                 st.setString(2, ref);
-                 st.setString(3, li);
-                 st.setString(4, four);
-                 st.setString(5, rang);
-               
-                 st.setInt(6, s);
-                 st.setString(7, Cat);
-                 
-                 
-                 int k2= st.executeUpdate();
-                 if(k2==1){
-                     
-                     JOptionPane.showMessageDialog(null, "Ajouté avec succès");
-                     txtFour.setSelectedItem("");
-                     txtRef.setText("");
-                     txtLibelle.setText("");
-                     txtRan.setText("");
-                     //txtPrix.setText("");
-                     txtStock.setText("");
-                     
+                if (rs.next() && rs.getInt(1) > 0) {
+                    JOptionPane.showMessageDialog(this, "Le code de l'article existe déjà. Veuillez en choisir un autre.");
+                    return;
+                }
+                if (txtCat.getSelectedItem().toString().equals("") || txtRef.getText().equals("")
+                        || txtLibelle.getText().equals("")
+                        || txtFour.getSelectedItem().equals("") || txtRan.getText().equals("")
+                        || txtStock.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "SVP entrer les informations complete");
+                } else {
+                    Cat = txtCat.getSelectedItem().toString();
+                    four = txtFour.getSelectedItem().toString();
+                    ref = txtRef.getText();
+                    li = txtLibelle.getText();
+                    rang = txtRan.getText();
+
+                    s = Integer.parseInt(txtStock.getText());
+                    pstmt = con.prepareStatement("SELECT COUNT(*) FROM ARTICLE WHERE refArt = ?");
+                    pstmt.setString(1, ref);
+                    ResultSet rs = pstmt.executeQuery();
+                    String sqls = "SELECT codeCat FROM categorie WHERE nomCat =?";
+                    PreparedStatement stmt = con.prepareStatement(sqls);
+                    stmt.setString(1, Cat); // Set the parameter value here
+                    ResultSet k = stmt.executeQuery();
+
+                    // Vérifier si l'article existe déjà
+                    if (k.next()) {
+                        code = k.getString("codeCat");
+                        // Insertion de l'article avec la date et l'heure actuelles
+                  String sql = "INSERT INTO article(codeCat,refArt,libelle,fournisseur,rangement,stock_entree,categorie) VALUES (?,?,?,?,?,?,?)";
+                PreparedStatement st = con.prepareStatement(sql);
+
+                        st.setString(1, code);
+                        st.setString(2, ref);
+                        st.setString(3, li);
+                        st.setString(4, four);
+                        st.setString(5, rang);
+
+                        st.setInt(6, s);
+                        st.setString(7, Cat);
+      
+                      
+                        int i = st.executeUpdate();
+
+                        if (i == 1) {
+                          
+
+                            JOptionPane.showMessageDialog(null, "Ajouté avec succès");
+                            txtFour.setSelectedItem("");
+                            txtRef.setText("");
+                            txtLibelle.setText("");
+                            txtRan.setText("");
+                            
+                            txtStock.setText("");
                      loadData();
                      ajoutcat();
                      ajoutfour();
                      st.close();
-                 }else{
-                     JOptionPane.showMessageDialog(null, "failed");
-                     
-                 }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "failed");
+
+                        }
+                    }
                 }
-             }
-         }
-        } catch (SQLException | ClassNotFoundException |NumberFormatException ex) {
+            }
+
+        } catch (SQLException | ClassNotFoundException | NumberFormatException ex) {
             Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        nbrCateg();
 
     }//GEN-LAST:event_btnAjoutAActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
- try {
+        try {
 
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
@@ -605,27 +646,26 @@ public class article extends javax.swing.JFrame {
                 String codecat = table.getValueAt(row, 0).toString();
                 String ref = table.getValueAt(row, 1).toString();
                 String libelle = table.getValueAt(row, 2).toString();
-                 String rangement = table.getValueAt(row, 3).toString();
+                String rangement = table.getValueAt(row, 3).toString();
                 String categorie = table.getValueAt(row, 4).toString();
-               
+
                 String four = table.getValueAt(row, 5).toString();
                 int stock = Integer.parseInt(table.getValueAt(row, 6).toString());
 
-                
                 txtCat.setSelectedItem(categorie);
                 txtRef.setText(ref);
                 txtFour.setSelectedItem(four);
                 txtLibelle.setText(libelle);
-                  txtRan.setText(rangement);
-                   txtStock.setText(String.valueOf(stock));
-    }
+                txtRan.setText(rangement);
+                txtStock.setText(String.valueOf(stock));
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Listcategorie.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tableMouseClicked
 
     private void btnSuppAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuppAActionPerformed
-        String cat,four,rangement,libelle,refArt;
+        String cat, four, rangement, libelle, refArt;
         int stock;
 
         int selectedRow = table.getSelectedRow();
@@ -635,44 +675,42 @@ public class article extends javax.swing.JFrame {
             return;
         }
 
-        cat= txtCat.getSelectedItem().toString();
-        four= txtFour.getSelectedItem().toString();
-        rangement=txtRan.getText();
-        libelle=txtLibelle.getText();
-        refArt=txtRef.getText();
-        stock=Integer.parseInt(txtStock.getText());
+        cat = txtCat.getSelectedItem().toString();
+        four = txtFour.getSelectedItem().toString();
+        rangement = txtRan.getText();
+        libelle = txtLibelle.getText();
+        refArt = txtRef.getText();
+        stock = Integer.parseInt(txtStock.getText());
         try {
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
             String user = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url, user, pwd);
-            
-             String query="select codeCat from categorie where nomCat=?";
-             PreparedStatement st1 = con.prepareStatement(query);
-            st1.setString(1,cat);
-            ResultSet rs1=st1.executeQuery();
-            rs1.next();
-            String code=rs1.getString("codeCat");
 
-             
+            String query = "select codeCat from categorie where nomCat=?";
+            PreparedStatement st1 = con.prepareStatement(query);
+            st1.setString(1, cat);
+            ResultSet rs1 = st1.executeQuery();
+            rs1.next();
+            String code = rs1.getString("codeCat");
+
 //            String sq="select stock_entree from article where refArt=?";
 //            PreparedStatement st = con.prepareStatement(sq);
 //            st.setString(1,refArt);
 //            ResultSet rs=st.executeQuery();
 //            rs.next();
 //            int stock_tab=rs.getInt("stock_entree");
-
-           // int stock_nouveau = stock_tab + stock;
+            // int stock_nouveau = stock_tab + stock;
             String sql = "UPDATE article SET stock_entree=?,rangement=?,fournisseur=?,libelle=?,categorie=? where refArt=?";
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, stock);
             stmt.setString(2, rangement);
-             stmt.setString(3, four);
-              stmt.setString(4, libelle);
-               stmt.setString(5, cat);
-               stmt.setString(6,refArt);
+            stmt.setString(3, four);
+            stmt.setString(4, libelle);
+            stmt.setString(5, cat);
+            stmt.setString(6, refArt);
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "La ligne a été modifiée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
@@ -682,10 +720,10 @@ public class article extends javax.swing.JFrame {
             table.setValueAt(libelle, selectedRow, 2);
             table.setValueAt(rangement, selectedRow, 3);
             table.setValueAt(cat, selectedRow, 4);
-           
+
             table.setValueAt(four, selectedRow, 5);
             table.setValueAt(stock, selectedRow, 6);
-            
+
             con.close();
             stmt.close();
 
@@ -693,20 +731,20 @@ public class article extends javax.swing.JFrame {
             Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
-        }                            
+        }
 
-   
+
     }//GEN-LAST:event_btnSuppAActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-       
+loadData();
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         setVisible(false);
         new menu().setVisible(true);
-       this.dispose();
-       
+        this.dispose();
+
 
     }//GEN-LAST:event_jLabel10MouseClicked
 
@@ -719,7 +757,7 @@ public class article extends javax.swing.JFrame {
     }//GEN-LAST:event_txtchrActionPerformed
 
     private void btnSuppA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuppA1ActionPerformed
-        String cat,four,rangement,libelle,refArt;
+        String cat, four, rangement, libelle, refArt;
         int stock;
 
         int selectedRow = table.getSelectedRow();
@@ -729,12 +767,12 @@ public class article extends javax.swing.JFrame {
             return;
         }
 
-        cat= txtCat.getSelectedItem().toString();
-        four= txtFour.getSelectedItem().toString();
-        rangement=txtRan.getText();
-        libelle=txtLibelle.getText();
-        refArt=txtRef.getText();
-        stock=Integer.parseInt(  txtStock.getText());
+        cat = txtCat.getSelectedItem().toString();
+        four = txtFour.getSelectedItem().toString();
+        rangement = txtRan.getText();
+        libelle = txtLibelle.getText();
+        refArt = txtRef.getText();
+        stock = Integer.parseInt(txtStock.getText());
         try {
             String url = "jdbc:mysql://localhost:3306/stock";
             String pwd = "";
@@ -742,35 +780,33 @@ public class article extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url, user, pwd);
 
-            String query="select codeCat from categorie where nomCat=?";
+            String query = "select codeCat from categorie where nomCat=?";
             PreparedStatement st1 = con.prepareStatement(query);
-            st1.setString(1,cat);
-            ResultSet rs1=st1.executeQuery();
-            while(rs1.next()){
-            String code=rs1.getString("codeCat");
-            
-            String sq="select stock_entree from article where refArt=?";
-            PreparedStatement st = con.prepareStatement(sq);
-            st.setString(1,refArt);
-            ResultSet rs=st.executeQuery();
-            rs.next();
-            int stock_tab=rs.getInt("stock_entree");
+            st1.setString(1, cat);
+            ResultSet rs1 = st1.executeQuery();
+            while (rs1.next()) {
+                String code = rs1.getString("codeCat");
 
-            
-            String sql = "UPDATE article SET stock_entree=?,rangement=?,fournisseur=?,libelle=?,categorie=? where refArt=?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            
-            int stock_nouveau = stock_tab + stock;
-            stmt.setInt(1, stock_nouveau);
-            stmt.setString(2, rangement);
-            stmt.setString(3, four);
-            stmt.setString(4, libelle);
-            stmt.setString(5, cat);
-            stmt.setString(6,refArt);
-            stmt.executeUpdate();
+                String sq = "select stock_entree from article where refArt=?";
+                PreparedStatement st = con.prepareStatement(sq);
+                st.setString(1, refArt);
+                ResultSet rs = st.executeQuery();
+                rs.next();
+                int stock_tab = rs.getInt("stock_entree");
 
-            JOptionPane.showMessageDialog(this, "La ligne a été modifiée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                String sql = "UPDATE article SET stock_entree=?,rangement=?,fournisseur=?,libelle=?,categorie=? where refArt=?";
+                PreparedStatement stmt = con.prepareStatement(sql);
 
+                int stock_nouveau = stock_tab + stock;
+                stmt.setInt(1, stock_nouveau);
+                stmt.setString(2, rangement);
+                stmt.setString(3, four);
+                stmt.setString(4, libelle);
+                stmt.setString(5, cat);
+                stmt.setString(6, refArt);
+                stmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "La ligne a été modifiée avec succès", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
                 table.setValueAt(code, selectedRow, 0);
                 table.setValueAt(refArt, selectedRow, 1);
@@ -780,8 +816,7 @@ public class article extends javax.swing.JFrame {
                 table.setValueAt(four, selectedRow, 5);
                 table.setValueAt(stock_nouveau, selectedRow, 6);
 
-            
-            stmt.close();
+                stmt.close();
             }
             st1.close();
             con.close();
@@ -791,6 +826,39 @@ public class article extends javax.swing.JFrame {
             Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSuppA1ActionPerformed
+
+    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
+        String pide = txtchr.getText().toString();
+        try {
+            model1.setRowCount(0);
+
+            pstmt = con.prepareStatement("SELECT * FROM article WHERE refArt LIKE ? OR libelle LIKE ?");
+            pstmt.setString(1, "%" + pide + "%");
+            pstmt.setString(2, "%" + pide + "%");
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String Cat = rs.getString("categorie");
+                String codeCat = rs.getString("codeCat");
+                String refArt = rs.getString("refArt");
+                String libelle = rs.getString("libelle");
+                String rangement = rs.getString("rangement");
+
+                String fournisseur = rs.getString("fournisseur");
+
+                int stock = rs.getInt("stock_entree");
+
+                model1.addRow(new Object[]{codeCat, refArt, libelle, rangement, Cat, fournisseur, stock});
+            }
+
+            if (model1.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Aucun résultat trouvé.");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erreur SQL : " + ex.getMessage());
+            Logger.getLogger(article.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel13MouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -809,10 +877,13 @@ public class article extends javax.swing.JFrame {
     private javax.swing.JButton btnSuppA;
     private javax.swing.JButton btnSuppA1;
     private javax.swing.JLabel cherche;
+    private javax.swing.JTextField dateR;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -834,7 +905,5 @@ public class article extends javax.swing.JFrame {
     private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtchr;
     // End of variables declaration//GEN-END:variables
-
-
 
 }

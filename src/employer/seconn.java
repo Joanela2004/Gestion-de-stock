@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.model;
+package employer;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,12 +20,12 @@ import javax.swing.JOptionPane;
  *
  * @author user
  */
-public class AccueilForm extends javax.swing.JFrame {
+public class seconn extends javax.swing.JFrame {
 
     /**
      * Creates new form AccueilForm
      */
-    public AccueilForm() {
+    public seconn() {
         initComponents();
 
     }
@@ -226,13 +227,7 @@ public class AccueilForm extends javax.swing.JFrame {
                 int m = Integer.parseInt(txtMatricule.getText());
                 pa = txtPass.getText();
 
-//                try {
-//                    String sq = "select numDemande from demande ";
-//
-//                    PreparedStatement pstmt1 = con.prepareStatement(sq);
-//                    ResultSet rs1 = pstmt1.executeQuery();
-//                    rs1.next();
-//                    int numD = rs1.getInt("NumDemande");
+
 
                     String sql = "SELECT pass,services from employe where matricule=? ";
                     PreparedStatement pstmt = con.prepareStatement(sql);
@@ -258,7 +253,7 @@ public class AccueilForm extends javax.swing.JFrame {
 
                             } else {
 
-                                Magasin f = new Magasin(m);
+                                commande f = new commande(m);
                                 f.setVisible(true);
                                 this.dispose();
 
@@ -276,7 +271,7 @@ public class AccueilForm extends javax.swing.JFrame {
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(AccueilForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(seconn.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -298,21 +293,23 @@ public class AccueilForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccueilForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(seconn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccueilForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(seconn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccueilForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(seconn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccueilForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(seconn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccueilForm().setVisible(true);
+                new seconn().setVisible(true);
             }
         });
     }

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.model;
+package employer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,15 +17,15 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import jdk.jfr.Category;
-import com.model.article;
+import employer.article;
 
-public class categ extends javax.swing.JFrame {
+public class entrer extends javax.swing.JFrame {
 
     private DefaultTableModel model;
     private JComboBox<String> itemCc;
     private article articleInstance;
 
-    public categ() throws SQLException {
+    public entrer() throws SQLException {
         initComponents();
         Connect();
         LoadData();
@@ -46,9 +46,9 @@ public class categ extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stock", "root", "");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
 
         }
     }
@@ -59,7 +59,7 @@ public class categ extends javax.swing.JFrame {
             pstmt = con.prepareStatement("SELECT codeCat FROM categorie");
             rs = pstmt.executeQuery();
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -84,7 +84,7 @@ public class categ extends javax.swing.JFrame {
                 df.addRow(vec);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -105,7 +105,7 @@ public class categ extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Erreur SQL: " + ex.getMessage());
         }
         nbrCateg();
@@ -122,7 +122,7 @@ public class categ extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Erreur SQL: " + ex.getMessage());
         }
     }
@@ -136,8 +136,6 @@ public class categ extends javax.swing.JFrame {
         nameCat = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cherche = new javax.swing.JLabel();
-        txtchr = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -151,6 +149,10 @@ public class categ extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         nbrCat = new javax.swing.JTextField();
         exit = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(80, 80));
@@ -163,16 +165,9 @@ public class categ extends javax.swing.JFrame {
 
         nameCat.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 153, 51)));
 
-        jLabel1.setText("Code Catégorie");
+        jLabel1.setText("Référence d'article :");
 
-        jLabel2.setText("Catégorie");
-
-        cherche.setText("Rechercher");
-        cherche.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chercheMouseClicked(evt);
-            }
-        });
+        jLabel2.setText("Quantité entrée :");
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 51));
         jPanel2.setPreferredSize(new java.awt.Dimension(652, 44));
@@ -189,7 +184,7 @@ public class categ extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(255, 153, 51));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("CATEGORIES DES ARTICLES");
+        jLabel5.setText("MOUVEMENT DES ENTREES DES ARTICLES");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -197,8 +192,8 @@ public class categ extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(369, 369, 369)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(312, 312, 312)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -216,17 +211,9 @@ public class categ extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Code catégorie", "Attribut"
+                "Référence article", "Libelle", "Quantité entrée", "Achat"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         tableCat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableCatMouseClicked(evt);
@@ -236,6 +223,7 @@ public class categ extends javax.swing.JFrame {
 
         btnAjout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAjout.setForeground(new java.awt.Color(0, 102, 0));
+        btnAjout.setIcon(new javax.swing.ImageIcon("D:\\mesdossiers\\stages sary\\ajouter(1).png")); // NOI18N
         btnAjout.setText("Ajouter");
         btnAjout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -245,6 +233,7 @@ public class categ extends javax.swing.JFrame {
 
         btnSupp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSupp.setForeground(new java.awt.Color(255, 0, 0));
+        btnSupp.setIcon(new javax.swing.ImageIcon("D:\\mesdossiers\\stages sary\\supprimer(1).png")); // NOI18N
         btnSupp.setText("Supprimer");
         btnSupp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,6 +243,7 @@ public class categ extends javax.swing.JFrame {
 
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 153, 102));
+        btnEdit.setIcon(new javax.swing.ImageIcon("D:\\mesdossiers\\stages sary\\editer(1).png")); // NOI18N
         btnEdit.setText("Modifier");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,6 +255,9 @@ public class categ extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 153, 51));
         jLabel4.setText("Remplissez le formulaire  ci-dessous :");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 153, 51));
+        jLabel6.setIcon(new javax.swing.ImageIcon("D:\\mesdossiers\\stages sary\\faire-tourner-en-sens-inverse.png")); // NOI18N
         jLabel6.setText("Actualiser");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -277,18 +270,26 @@ public class categ extends javax.swing.JFrame {
         nbrCat.setEditable(false);
         nbrCat.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         nbrCat.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        nbrCat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nbrCatActionPerformed(evt);
-            }
-        });
 
+        exit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        exit.setForeground(new java.awt.Color(204, 0, 0));
+        exit.setIcon(new javax.swing.ImageIcon("D:\\mesdossiers\\stages sary\\la-gauche.png")); // NOI18N
         exit.setText("Retour");
         exit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 exitMouseClicked(evt);
             }
         });
+
+        jLabel8.setText("Libelle :");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jComboBox1.setBorder(null);
+
+        jLabel9.setText("Type d'achat :");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Session", "Public", "Local", " " }));
+        jComboBox2.setBorder(null);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -297,79 +298,86 @@ public class categ extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnAjout)
-                                .addGap(51, 51, 51)
-                                .addComponent(btnEdit)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nbrCat, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSupp))
-                        .addGap(19, 19, 19))
+                        .addContainerGap(49, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(nbrCat, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(codeC, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameCat, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(codeC, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nameCat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAjout)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEdit)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnSupp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtchr, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(cherche, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(142, 142, 142)
+                        .addGap(623, 623, 623)
                         .addComponent(jLabel6)
-                        .addGap(50, 50, 50)
-                        .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1322, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtchr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cherche)
-                    .addComponent(jLabel6)
-                    .addComponent(exit))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
+                        .addGap(47, 47, 47)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(exit))
+                        .addGap(65, 65, 65)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
                         .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(codeC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(nameCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAjout)
                             .addComponent(btnEdit)
                             .addComponent(btnSupp))
-                        .addGap(79, 79, 79)
+                        .addGap(45, 45, 45)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nbrCat, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
-                        .addGap(46, 46, 46))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())))
+                        .addGap(46, 46, 46))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -389,31 +397,7 @@ public class categ extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         System.exit(0);
     }//GEN-LAST:event_jLabel3MouseClicked
-
-    private void chercheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chercheMouseClicked
-        String pid = txtchr.getText().toString();
-        try {
-            model.setRowCount(0);
-
-            pstmt = con.prepareStatement("SELECT * FROM categorie WHERE codeCat LIKE ? OR nomCat LIKE ?");
-            pstmt.setString(1, pid + "%");
-            pstmt.setString(2, pid + "%");
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                String cdeCat = rs.getString("codeCat");
-                String nmCat = rs.getString("nomCat");
-                model.addRow(new Object[]{cdeCat, nmCat});
-            }
-
-            if (model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "Aucun résultat");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_chercheMouseClicked
-    public categ(article articleInstance) {
+    public entrer(article articleInstance) {
         this.articleInstance = articleInstance;
         // Autres initialisations...
     }
@@ -456,7 +440,7 @@ public class categ extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 
@@ -505,7 +489,7 @@ public class categ extends javax.swing.JFrame {
                 }
 
             } catch (SQLException ex) {
-                Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
 
             }
         } else {
@@ -553,7 +537,7 @@ public class categ extends javax.swing.JFrame {
 
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
 
                 }
             }
@@ -572,22 +556,18 @@ public class categ extends javax.swing.JFrame {
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
         setVisible(false);
         new menu().setVisible(true);
-this.dispose();
-    }//GEN-LAST:event_exitMouseClicked
 
-    private void nbrCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nbrCatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nbrCatActionPerformed
+    }//GEN-LAST:event_exitMouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     article articleWindow = new article();
-                     categ categoryWindow = new categ(articleWindow);
-                    new categ().setVisible(true);
+                     entrer categoryWindow = new entrer(articleWindow);
+                    new entrer().setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(categ.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(entrer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -597,9 +577,10 @@ this.dispose();
     private javax.swing.JButton btnAjout;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSupp;
-    private javax.swing.JLabel cherche;
     private javax.swing.JTextField codeC;
     private javax.swing.JLabel exit;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -607,13 +588,14 @@ this.dispose();
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField nameCat;
     private javax.swing.JTextField nbrCat;
     private javax.swing.JTable tableCat;
-    private javax.swing.JTextField txtchr;
     // End of variables declaration//GEN-END:variables
 
 }

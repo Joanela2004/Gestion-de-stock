@@ -7,6 +7,7 @@ package com.mod;
 import com.mod.Magasin;
 import static com.mod.Magasin.txtRef;
 import static com.mod.Magasin.txtStock;
+import java.awt.CardLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,6 +31,7 @@ public class ArticleForm extends javax.swing.JFrame {
      */
     public ArticleForm() {
         initComponents();
+       
     }
  private int m;
     
@@ -100,6 +103,11 @@ return m;
         });
 
         jButton2.setText("Liste des commandes");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,7 +151,7 @@ return m;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      
-       EmployeForm emp=new EmployeForm();
+      EmployeForm emp=new EmployeForm();
        emp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -180,6 +188,10 @@ return m;
        art.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_btnartActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

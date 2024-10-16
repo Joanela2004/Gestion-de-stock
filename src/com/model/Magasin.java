@@ -4,8 +4,23 @@
  */
 package com.model;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import static com.itextpdf.text.pdf.PdfName.IM;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,7 +52,7 @@ private int numDemande;
     public Magasin() {
         initComponents();
      
-       // ajoutNumD();
+       ajoutNumD();
         Fill_Date();
         FillData();
     }
@@ -122,34 +137,34 @@ private int numDemande;
         }
 
     }
-// public void ajoutNumD() {
-//        try {
-//            String url = "jdbc:mysql://localhost:3306/stock";
-//            String pwd = "";
-//            String user = "root";
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection con = DriverManager.getConnection(url, user, pwd);
-//            con.setAutoCommit(false);
-//
-//                 String sq="select numDemande from demande ";
-//            
-//                 try {
-//                PreparedStatement pstmt = con.prepareStatement(sq);
-//                ResultSet rs = pstmt.executeQuery();
-//               
-//                while (rs.next()) {
-//                 int numD=rs.getInt("NumDemande");
-//                 txtNumD.setText(String.valueOf(numD));
-//                     }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
-//
-//            }
-//        } catch (SQLException | ClassNotFoundException ex) {
-//            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
+ public void ajoutNumD() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/stock";
+            String pwd = "";
+            String user = "root";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, user, pwd);
+            con.setAutoCommit(false);
+
+                 String sq="select numDemande from demande ";
+            
+                 try {
+                PreparedStatement pstmt = con.prepareStatement(sq);
+                ResultSet rs = pstmt.executeQuery();
+               
+                while (rs.next()) {
+                 int numD=rs.getInt("NumDemande");
+                 txtNumD.setText(String.valueOf(numD));
+                     }
+            } catch (SQLException ex) {
+                Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
 
     /**
@@ -197,7 +212,7 @@ private int numDemande;
         txtNumD = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -395,13 +410,13 @@ private int numDemande;
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Reference", "Quantite", "Date"
             }
         ));
         jScrollPane5.setViewportView(table);
@@ -426,10 +441,10 @@ private int numDemande;
             }
         });
 
-        jButton8.setText("sortire");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.setText("accueil");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -446,10 +461,10 @@ private int numDemande;
             .addGroup(layout.createSequentialGroup()
                 .addGap(441, 441, 441)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -459,7 +474,7 @@ private int numDemande;
                     .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -497,10 +512,6 @@ private int numDemande;
 //            Logger.getLogger(article_produit.class.getName()).log(Level.SEVERE, null, ex);
 //        } 
     }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-
-    }//GEN-LAST:event_jButton8ActionPerformed
 
     private void txtCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodeActionPerformed
         // TODO add your handling code here:
@@ -546,13 +557,13 @@ private int numDemande;
             stmt1.setString(1, refArt);
             ResultSet rs = stmt1.executeQuery();
             rs.next();
+            
             int stock = rs.getInt("stock_entree");
              int r = stock - qtt;
             String sql = "insert into recevoir (matricule,refArt,qttEntree,dateEntree)values(?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            String s1 = "update article set stock_entree=? where refArt=?";
-            PreparedStatement st = con.prepareStatement(s1);
+
            
             
             stmt.setInt(1, getMat());
@@ -562,7 +573,7 @@ private int numDemande;
             stmt.executeUpdate();
 
             
-            if (r <=0) {
+            if (r <0) {
              
             JOptionPane.showMessageDialog(new JFrame(), "le stock est insuffisant", "Alerte", JOptionPane.ERROR_MESSAGE);
               txtCode.setText("");
@@ -573,8 +584,26 @@ private int numDemande;
                 txtStock.setText("");
                 
             }
+            else if (r == 0){
+            String s1 = "update article set stock_entree=? where refArt=?";
+            PreparedStatement st = con.prepareStatement(s1);
+            st.setInt(1, r);
+            st.setString(2, refArt);
+            st.executeUpdate();
+               JOptionPane.showMessageDialog(new JFrame(), "le stock est maintenant vide", "Alerte", JOptionPane.ERROR_MESSAGE);
+                
+                txtCode.setText("");
+                txtRef.setText("");
+                txtFour.setText("");
+                txtRan.setText("");
+                txtSE.setText("");
+                txtStock.setText("");
+                loadData();
+               // ajoutNumD();
+                FillData();}
             else if (r == 1){
-
+            String s1 = "update article set stock_entree=? where refArt=?";
+            PreparedStatement st = con.prepareStatement(s1);
             st.setInt(1, r);
             st.setString(2, refArt);
             st.executeUpdate();
@@ -592,7 +621,8 @@ private int numDemande;
                 
                
             } else if (r > 1) {
-            
+            String s1 = "update article set stock_entree=? where refArt=?";
+            PreparedStatement st = con.prepareStatement(s1);
             st.setInt(1, r);
             st.setString(2, refArt);
             st.executeUpdate();
@@ -625,6 +655,60 @@ private int numDemande;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+try {
+        String url = "jdbc:mysql://localhost:3306/stock";
+            String pwd = "";
+            String user = "root";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, user, pwd);
+             PdfPTable table = new PdfPTable(3);
+             table.setWidthPercentage(100);
+//           
+             java.sql.Date date = java.sql.Date.valueOf(java.time.LocalDate.now().toString());
+      
+            // String query = "select*from recevoir where matricule='"+getMat()+"'";
+             String query="select * from recevoir where dateEntree=? and matricule='"+getMat()+"'";
+             
+            PreparedStatement st = con.prepareStatement(query);
+            st.setDate(1,date);
+            ResultSet rs =st.executeQuery();
+     
+            if (rs.next()) {
+          
+            String fileName = getMat() + ".pdf";
+
+            Document doc =new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream(fileName));
+            doc.open();
+            com.itextpdf.text.Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+          
+             Chunk titleChunk = new Chunk("Fiche de demande pour le matricule: " + getMat(),  titleFont);
+             titleChunk.setUnderline(0.1f, -1f);
+               Paragraph title = new Paragraph(titleChunk);
+                int qtt = rs.getInt("qttEntree");
+                String refArt = rs.getString("refArt");
+                Date dt = rs.getDate("dateEntree");
+                table.addCell(refArt);
+                table.addCell(String.valueOf(qtt));
+                table.addCell(String.valueOf(dt));
+               
+                doc.add(table);
+                 JOptionPane.showMessageDialog(this, "Imprime " ,"Dialog" ,JOptionPane.OK_OPTION);
+            
+                doc.close();
+            }
+
+ } catch (SQLException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Magasin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -695,6 +779,12 @@ private int numDemande;
 
     }//GEN-LAST:event_searchDataActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+this.dispose();
+       menu art = new menu();
+        art.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -735,10 +825,10 @@ private int numDemande;
     private javax.swing.JButton btnsearch;
     public static javax.swing.JButton jButton1;
     public static javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     public static javax.swing.JButton jButton4;
     public static javax.swing.JButton jButton6;
     public static javax.swing.JButton jButton7;
-    public static javax.swing.JButton jButton8;
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

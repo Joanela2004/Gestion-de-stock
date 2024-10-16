@@ -67,13 +67,6 @@ public class article_produit extends javax.swing.JFrame {
                    
                     
                     int stock = rs.getInt("stock_entree");
-                    
-//                   if(stock<=0){
-//                    JOptionPane.showMessageDialog(this, "Votre stock ne doit pas etre insuffisant", "Erreur", JOptionPane.ERROR_MESSAGE);
-//                     return;
-//                   }
-//                   else{
-
                     model.addRow(new Object[]{codeCat, refArt, libelle, rangement,Cat, fournisseur, stock});
               
                    
